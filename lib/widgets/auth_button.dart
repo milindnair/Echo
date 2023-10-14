@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:echo/widgets/AuthButton.dart';
+import 'package:echo/widgets/Auth_Button.dart';
 
 class AuthButton extends StatelessWidget{
   const AuthButton({
