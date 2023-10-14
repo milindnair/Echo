@@ -5,12 +5,13 @@ import 'package:echo/screens/landing.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:echo/screens/home/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
-);
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(const MyApp());
 }
@@ -27,6 +28,7 @@ final theme = ThemeData(
 final routes = {
   '/login': (context) => const LoginScreen(),
   '/signup': (context) => const SignupScreen(),
+  '/home': (context) => const HomeScreen(),
 };
 
 class MyApp extends StatelessWidget {

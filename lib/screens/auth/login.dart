@@ -1,6 +1,10 @@
 import 'package:echo/widgets/auth_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+
+final _firebase = FirebaseAuth.instance;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -13,8 +17,39 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
-  
+  Future<void> _handleLogin() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        await _firebase.signInWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text,
+        );
+
+        // Successfully logged in, navigate to '/home'
+        Navigator.pushNamed(context, '/home');
+      } on FirebaseAuthException catch (error) {
+        if (error.code == 'user-not-found' || error.code == 'wrong-password') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Invalid Email or Password'),
+            ),
+          );
+        } else {
+          // Handle other authentication errors
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Authentication failed'),
+            ),
+          );
+        }
+      } catch (error) {
+        print('Unexpected error: $error');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               TextFormField(
+                controller: _emailController,
                 decoration: const InputDecoration(
                   hintText: 'Email',
                 ),
@@ -54,10 +90,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 20,
               ),
               TextFormField(
-                
+                controller: _passwordController,
+                obscureText: true,
                 decoration: const InputDecoration(
                   hintText: 'Password',
-                  
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -76,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: const Text(
                   "Forgot Password?",
                   style: TextStyle(
-                    fontSize: 15
+                    fontSize: 15,
                   ),
                 ),
               ),
@@ -85,19 +121,9 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Center(
                 child: AuthButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Processing Data')),
-                        );
-                      }
-                      else{
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Invalid Email or Password')),
-                        );
-                      }
-                    },
-                    text: "Log In"),
+                  onPressed: _handleLogin,
+                  text: "Log In",
+                ),
               )
             ],
           ),

@@ -47,7 +47,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var _isLogin = false;
+    var _signedUp = false;
 
     Future<void> _submitHandler() async {
       final isValid = _formKey.currentState!.validate();
@@ -56,36 +56,43 @@ class _SignupScreenState extends State<SignupScreen> {
       }
       _formKey.currentState!.save();
 
-      if (_isLogin) {
-        // Log the user in
-        // You can access email and password using _emailController.text and _passwordController.text
-      } else {
-        try {
-          final userCredentials = await _firebase
-              .createUserWithEmailAndPassword(
-                email: _emailController.text,
-                password: _passwordController.text,
-              );
+      try {
+        final userCredentials = await _firebase.createUserWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text,
+        );
 
-              FirebaseFirestore.instance.collection('users').doc(userCredentials.user!.uid).set({
-                'name': _nameController.text,
-                'email': _emailController.text,
-                'phone': _phoneController.text,
-                'password': _passwordController.text,
-              });
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredentials.user!.uid)
+            .set({
+          'name': _nameController.text,
+          'email': _emailController.text,
+          'phone': _phoneController.text,
+          'password': _passwordController.text,
+        });
 
-        } on FirebaseAuthException catch (error) {
-          if (error.code == 'email-already-in-use') {
-            print('The account already exists for that email.');
-          }
-          ScaffoldMessenger.of(context).clearSnackBars();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(error.message ?? 'Authentication failed!'),
-              backgroundColor: Colors.red,
-            ),
-          );
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Successfully signed up!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+
+        // Move this outside the if statement
+        Navigator.pushNamed(context, '/login');
+      } on FirebaseAuthException catch (error) {
+        if (error.code == 'email-already-in-use') {
+          print('The account already exists for that email.');
         }
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(error.message ?? 'Authentication failed!'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     }
 
