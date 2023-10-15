@@ -1,3 +1,5 @@
+import 'package:echo/main.dart';
+import 'package:echo/widgets/user_image_picker.dart';
 import 'package:flutter/material.dart';
 
 class AddPost extends StatefulWidget {
@@ -5,24 +7,33 @@ class AddPost extends StatefulWidget {
 
   const AddPost({super.key});
   @override
-  _AddPostState createState() => _AddPostState();
+  State<AddPost> createState() => _AddPostState();
 }
 
 class _AddPostState extends State<AddPost> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Post'),
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      ),
-      body: Center(
-        child: Text(
-          'Add Post',
-          style: TextStyle(fontSize: 24),
+        appBar: AppBar(
+          title: const Text('Add Post'),
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         ),
-      ),
-    );
+        body: const Center(
+          child: Column(
+            
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              
+              UserImagePicker(),
+               SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                onPressed: null,
+                child: Text("Post"),
+              )
+            ],
+          ),
+        ));
   }
 }
