@@ -1,3 +1,4 @@
+import 'package:echo/widgets/post.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatelessWidget {
@@ -128,8 +129,11 @@ class Profile extends StatelessWidget {
               color: const Color.fromARGB(255, 229, 64, 166),
             ),
             Container(
-              child: const Text("Baaki ka content daaldena"),
-            )
+              child: isMyEchosSelected
+                ? const PostComponent(username: "Parth Gala", text: "Aurbhaii kese ho aaplog ", imageUrl: "")
+                // : dont display anything
+                : const SizedBox(),
+            ),
           ],
         ),
       ),
