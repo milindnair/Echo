@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:echo/widgets/post.dart';
 
 class HomeTab extends StatelessWidget {
   const HomeTab({Key? key}) : super(key: key);
@@ -29,9 +30,13 @@ class HomeTab extends StatelessWidget {
           ),
           title: const Text('Home'),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: [
-            Icon(Icons.flight, size: 350),
+            PostComponent(
+              username: 'Amanda',
+              text: 'This is a post',
+              imageUrl: 'assets/logo.png',
+            ),
             Icon(Icons.directions_transit, size: 350),
           ],
         ),
