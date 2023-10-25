@@ -1,8 +1,9 @@
+import 'package:echo/providers/user_provider.dart';
 import 'package:echo/widgets/auth_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final _firebase = FirebaseAuth.instance;
 
@@ -20,39 +21,43 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  Future<void> _handleLogin() async {
-    if (_formKey.currentState!.validate()) {
-      try {
-        await _firebase.signInWithEmailAndPassword(
-          email: _emailController.text,
-          password: _passwordController.text,
-        );
-
-        // Successfully logged in, navigate to '/home'
-        Navigator.pushNamed(context, '/home');
-      } on FirebaseAuthException catch (error) {
-        if (error.code == 'user-not-found' || error.code == 'wrong-password') {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Invalid Email or Password'),
-            ),
-          );
-        } else {
-          // Handle other authentication errors
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Authentication failed'),
-            ),
-          );
-        }
-      } catch (error) {
-        print('Unexpected error: $error');
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    Future<void> _handleLogin() async {
+      if (_formKey.currentState!.validate()) {
+        try {
+          final userCredential = await _firebase.signInWithEmailAndPassword(
+            email: _emailController.text,
+            password: _passwordController.text,
+          );
+
+          // ignore: use_build_context_synchronously
+          
+
+          // Successfully logged in, navigate to '/home'
+          Navigator.pushNamed(context, '/home');
+        } on FirebaseAuthException catch (error) {
+          if (error.code == 'user-not-found' ||
+              error.code == 'wrong-password') {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Invalid Email or Password'),
+              ),
+            );
+          } else {
+            // Handle other authentication errors
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Authentication failed'),
+              ),
+            );
+          }
+        } catch (error) {
+          print('Unexpected error: $error');
+        }
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFEFE1D1),
