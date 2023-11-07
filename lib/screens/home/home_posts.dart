@@ -36,7 +36,7 @@ class HomeTab extends StatelessWidget {
               username: 'Amanda',
               text: 'This is a post',
               imageUrl: 'assets/logo.png',
-            ),
+            ), 
             Icon(Icons.directions_transit, size: 350),
           ],
         ),

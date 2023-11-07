@@ -29,13 +29,14 @@ class _HomeScreenState extends State<HomeScreen> {
       case 1:
         body = const NotificationScreen();
         appBarTitle = 'Notifications';
+      
         break;
       case 2:
         body = const AddPost() ;
         appBarTitle = 'Add';
         break;
       case 3:
-        body = const Search();
+        body = const  SearchUserPage();
         appBarTitle = 'Search User';
         break;
       case 4:
