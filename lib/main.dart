@@ -1,5 +1,6 @@
 import 'package:echo/screens/auth/login.dart';
 import 'package:echo/screens/auth/signup.dart';
+import 'package:echo/screens/profile/edit_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:echo/screens/landing.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -34,6 +35,7 @@ final routes = {
   '/login': (context) => const LoginScreen(),
   '/signup': (context) => const SignupScreen(),
   '/home': (context) => const HomeScreen(),
+  '/editprofile': (context) => const EditProfileScreen(),
 };
 
 class MyApp extends StatelessWidget {
@@ -43,6 +45,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: theme,
       routes: routes,
       home: const LandingScreen(),

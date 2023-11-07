@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
         appBarTitle = 'Search User';
         break;
       case 4:
-        body = const Profile();
+        body = ProfilePage();
         appBarTitle = 'Profile';
         break;
       default:
@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications_rounded),
-            label: 'Noti',
+            label: 'Alerts',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add),
